@@ -67,7 +67,7 @@ export class SelectedTaskService {
     this.currentView$.next(DashboardViews.submission);
   }
 
-  public get selectedTask$(): Subject<Task> {
+  public get selectedTask$(): BehaviorSubject<Task> {
     return this.task$;
   }
 

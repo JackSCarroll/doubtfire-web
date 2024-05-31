@@ -10,15 +10,14 @@ import {
 } from '@angular/core';
 import {MediaObserver} from 'ng-flex-layout';
 import {UIRouter} from '@uirouter/angular';
-import {auditTime, merge, Observable, of, Subject, tap, withLatestFrom} from 'rxjs';
+import {auditTime, merge, Observable, of, Subject, Subscription, tap, withLatestFrom} from 'rxjs';
 import {Task} from 'src/app/api/models/task';
 import {Unit} from 'src/app/api/models/unit';
 import {UnitRole} from 'src/app/api/models/unit-role';
 import {FileDownloaderService} from 'src/app/common/file-downloader/file-downloader.service';
 import {SelectedTaskService} from 'src/app/projects/states/dashboard/selected-task.service';
-import {HotkeysService, HotkeysHelpComponent} from '@ngneat/hotkeys';
 import {MatDialog} from '@angular/material/dialog';
-import {UserService} from 'src/app/api/services/user.service';
+import {FHotkeysService} from 'src/app/common/services/hotkeys.service';
 
 @Component({
   selector: 'f-inbox',
@@ -51,13 +50,12 @@ export class InboxComponent implements OnInit, AfterViewInit {
   }
 
   constructor(
-    private hotkeys: HotkeysService,
+    private hotkeyService: FHotkeysService,
     private selectedTask: SelectedTaskService,
     public mediaObserver: MediaObserver,
     public fileDownloader: FileDownloaderService,
     private router: UIRouter,
     public dialog: MatDialog,
-    private userService: UserService,
   ) {
     this.selectedTask.currentPdfUrl$.subscribe((url) => {
       this.visiblePdfUrl = url;
@@ -67,36 +65,20 @@ export class InboxComponent implements OnInit, AfterViewInit {
       this.taskSelected = task != null;
     });
   }
-  ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
-    const markers = ['Admin', 'Convenor', 'Tutor', 'Student'];
 
-    if (markers.includes(this.userService.currentUser?.role)) {
-      this.hotkeys.registerHelpModal(() => {
-        const ref = this.dialog.open(HotkeysHelpComponent, {
-          // width: '250px',
-        });
-        ref.componentInstance.title = 'Formatif Marking Shortcuts';
-        ref.componentInstance.dismiss.subscribe(() => ref.close());
-      });
-    }
+  ngAfterViewInit(): void {
+    this.hotkeyService.registerHotkeys(
+      {keys: 'control.c', description: 'Mark selected task as complete'},
+      this.selectedTask.selectedTask$.getValue()?.updateTaskStatus('complete'),
+    );
+
+    this.hotkeyService.registerHotkeys(
+      {keys: 'control.f', description: 'Mark selected task as fix and resubmit'},
+      this.selectedTask.selectedTask?.updateTaskStatus('fix_and_resubmit'),
+    );
   }
 
   ngOnInit(): void {
-    this.hotkeys
-      .addShortcut({
-        keys: 'control.c',
-        description: 'Mark selected task as complete',
-      })
-      .subscribe(() => this.selectedTask.selectedTask?.updateTaskStatus('complete'));
-
-    this.hotkeys
-      .addShortcut({
-        keys: 'control.f',
-        description: 'Mark selected task as fix',
-      })
-      .subscribe(() => this.selectedTask.selectedTask?.updateTaskStatus('fix_and_resubmit'));
-
     this.dragMoveAudited$ = this.dragMove$.pipe(
       withLatestFrom(this.inboxStartSize$),
       auditTime(30),
