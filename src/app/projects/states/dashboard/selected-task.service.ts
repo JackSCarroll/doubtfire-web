@@ -8,6 +8,7 @@ export enum DashboardViews {
   submission,
   task,
   similarity,
+  jplag,
 }
 
 @Injectable({
@@ -59,6 +60,10 @@ export class SelectedTaskService {
 
   public showSimilarity() {
     this.currentView$.next(DashboardViews.similarity);
+  }
+
+  public showJPLAGReport() {
+    this.currentView$.next(DashboardViews.jplag);
   }
 
   public showSubmission() {

@@ -108,6 +108,10 @@
           <mat-icon matListItemIcon aria-label="View Similarities">crisis_alert</mat-icon>
           View similarities
         </button>
+        <button mat-menu-item (click)="viewJPLAGReport()">
+          <mat-icon matListItemIcon aria-label="View JPLAG Report">preview</mat-icon>
+          View JPLAG report
+        </button>
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="selectedTask?.updateTaskStatus('feedback_exceeded')">
           <mat-icon matListItemIcon aria-label="Switch to Feedback Exceeded">running_with_errors</mat-icon>
