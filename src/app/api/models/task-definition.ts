@@ -188,12 +188,6 @@ export class TaskDefinition extends Entity {
     }/task_assessment_resources.json`;
   }
 
-  // public getTaskJPLAGReportUrl(): string {
-  //   return `${AppInjector.get(DoubtfireConstants).API_URL}/units/${this.unit.id}/task_definitions/${
-  //     this.id
-  //   }/jplag_report.json`;
-  // }
-
   public deleteTaskSheet(): Observable<any> {
     const httpClient = AppInjector.get(HttpClient);
     return httpClient.delete(this.taskSheetUploadUrl).pipe(tap(() => (this.hasTaskSheet = false)));
