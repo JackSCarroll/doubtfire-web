@@ -79,7 +79,11 @@
           <mat-icon>download</mat-icon>
           <span>Bulk Export Submission Files</span>
         </button>
-        <button mat-menu-item (click)="downloadJPLAGReport()">
+        <button
+          mat-menu-item
+          (click)="downloadJPLAGReport()"
+          [hidden]="false"
+        >
           <mat-icon>download</mat-icon>
           <span>Download JPLAG Report</span>
         </button>

@@ -85,5 +85,4 @@ export class FooterComponent implements OnInit {
   viewSimilarity() {
     this.selectedTaskService.showSimilarity();
   }
-
 }

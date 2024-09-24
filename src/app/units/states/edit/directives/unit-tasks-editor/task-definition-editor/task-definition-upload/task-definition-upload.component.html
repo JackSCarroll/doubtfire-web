@@ -79,6 +79,8 @@
   <mat-form-field appearance="outline" class="basis-1/2">
     <mat-label>Language used for Moss checks</mat-label>
     <mat-select [(ngModel)]="taskDefinition.mossLanguage">
+      <!-- If more language options added, unit-similarity-module.rb will need to be updated if moss and jplag -->
+      <!-- language option names differ -->
       <mat-option value="moss c">C</mat-option>
       <mat-option value="moss csharp">C#</mat-option>
       <mat-option value="moss cc">C++</mat-option>
