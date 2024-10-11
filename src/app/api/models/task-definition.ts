@@ -36,7 +36,7 @@ export class TaskDefinition extends Entity {
   maxQualityPts: number;
   overseerImageId: number;
   assessmentEnabled: boolean;
-  mossLanguage: string = 'moss c';
+  jplagLanguage: string = 'c';
 
   readonly unit: Unit;
 
@@ -160,7 +160,7 @@ export class TaskDefinition extends Entity {
     return this.plagiarismChecks?.length > 0;
   }
 
-  public get needsMoss(): boolean {
+  public get needsJplag(): boolean {
     return this.uploadRequirements.some((upreq) => upreq.type === 'code' && upreq.tiiCheck);
   }
 

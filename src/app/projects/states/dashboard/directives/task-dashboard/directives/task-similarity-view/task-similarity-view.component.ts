@@ -5,6 +5,9 @@ import { TaskSimilarity } from 'src/app/api/models/task-similarity';
 import { TaskSimilarityService } from 'src/app/api/services/task-similarity.service';
 import { AlertService } from 'src/app/common/services/alert.service';
 import { SelectedTaskService } from '../../../../selected-task.service';
+import {FileDownloaderService} from 'src/app/common/file-downloader/file-downloader.service';
+import { DoubtfireConstants } from 'src/app/config/constants/doubtfire-constants';
+import { AppInjector } from 'src/app/app-injector';
 
 @Component({
   selector: 'f-task-similarity-view',
@@ -19,7 +22,8 @@ export class TaskSimilarityViewComponent implements OnChanges {
   constructor(
     private taskSimilarityService: TaskSimilarityService,
     private alertsService: AlertService,
-    private selectedTaskService: SelectedTaskService
+    private selectedTaskService: SelectedTaskService,
+    private fileDownloaderService: FileDownloaderService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -53,5 +57,17 @@ export class TaskSimilarityViewComponent implements OnChanges {
     similarity.fetchSimilarityReportUrl().subscribe((url) => {
       window.open(url, '_blank');
     });
+  }
+
+  downloadJPLAGReport() {
+    const taskDef = this.task.definition;
+    this.fileDownloaderService.downloadFile(
+      //this.taskData.selectedTask.jplagReportUrl()
+      `${AppInjector.get(DoubtfireConstants).API_URL}/units/${
+        this.task.unit.id
+      }/task_definitions/${taskDef.id}/jplag_report`,
+      `${this.task.unit.code}-${taskDef.abbreviation}-jplag-report.zip`,
+    );
+    window.open('https://jplag.github.io/JPlag/', '_blank');
   }
 }
