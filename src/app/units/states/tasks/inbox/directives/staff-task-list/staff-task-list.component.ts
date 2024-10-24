@@ -77,6 +77,8 @@ export class StaffTaskListComponent implements OnInit, OnChanges, OnDestroy {
 
   tasks: any[] = null;
 
+  hasJplagReport: boolean;
+
   watchingTaskKey: any;
 
   panelOpenState = false;
@@ -206,20 +208,19 @@ export class StaffTaskListComponent implements OnInit, OnChanges, OnDestroy {
     return this.taskData.taskDefMode;
   }
 
-  // public get taskHasJplagReport(): boolean {
-  //   console.log('taskHasSimilarityChecks getter called');
-  //   if (!this.selectedTask.hasSimilarity()) {
-  //     console.error('filters.taskDefinition is not defined');
-  //     return false;
-  //   }
-  //   if (typeof this.filters.taskDefinition.hasPlagiarismCheck !== 'function') {
-  //     console.error('hasPlagiarismCheck is not a function');
-  //     return false;
-  //   }
-  //   const result = this.filters.taskDefinition.hasPlagiarismCheck();
-  //   console.log('taskHasSimilarityChecks result:', result);
-  //   return result;
-  // }
+  // TODO: Get this to return correct value from the API
+  public async taskHasJplagReport(): Promise<boolean> {
+    const taskDef = this.filters.taskDefinition;
+    return taskDef
+      .hasJplagReport()
+      .then((hasReport) => {
+        return hasReport ?? false;
+      })
+      .catch((error) => {
+        console.error(error);
+        return false;
+      });
+  }
 
   downloadSubmissionPdfs() {
     const taskDef = this.filters.taskDefinition;
@@ -376,6 +377,10 @@ export class StaffTaskListComponent implements OnInit, OnChanges, OnDestroy {
         this.alertService.error(message, 6000);
       },
     });
+    this.taskHasJplagReport().then((hasReport) => {
+      this.hasJplagReport = hasReport;
+    });
+    console.log('HAS JPLAG REPORT:', this.hasJplagReport);
   }
 
   setSelectedTask(task: Task) {

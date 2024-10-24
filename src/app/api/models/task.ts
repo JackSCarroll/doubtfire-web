@@ -513,12 +513,6 @@ export class Task extends Entity {
     }/task_def_id/${this.definition.id}/submission${asAttachment ? '?as_attachment=true' : ''}`;
   }
 
-  public jplagReportUrl(): string {
-    return `${AppInjector.get(DoubtfireConstants).API_URL}/units/${
-      this._unit.id
-    }/task_definitions/${this.definition.id}/jplag_report`;
-  }
-
   public testSubmissionUrl(): string {
     return `${AppInjector.get(DoubtfireConstants).API_URL}/units/${this.unit.id}/task_definitions/${
       this.definition.id

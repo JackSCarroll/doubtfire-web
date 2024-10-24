@@ -67,13 +67,6 @@ export class FooterComponent implements OnInit {
     );
   }
 
-  downloadJPLAGReport() {
-    this.fileDownloader.downloadFile(
-      this.selectedTask.jplagReportUrl(),
-      `${this.selectedTask.definition.name}-jplag-report.zip`,
-    );
-  }
-
   viewTaskSheet() {
     this.selectedTaskService.showTaskSheet();
   }

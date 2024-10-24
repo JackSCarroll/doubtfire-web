@@ -79,14 +79,11 @@
           <mat-icon>download</mat-icon>
           <span>Bulk Export Submission Files</span>
         </button>
-        <button
-          mat-menu-item
-          (click)="downloadJPLAGReport()"
-          [hidden]="false"
-        >
+        <!-- Commented out until hasJplagReport check works correctly -->
+        <!-- <button mat-menu-item (click)="downloadJPLAGReport()" [disabled]="hasJplagReport">
           <mat-icon>download</mat-icon>
           <span>Download JPLAG Report</span>
-        </button>
+        </button> -->
       </mat-menu>
     </div>
     <mat-accordion>
